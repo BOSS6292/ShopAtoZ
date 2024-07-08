@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shop_a_z/auth/auth_service.dart';
+import 'package:shop_a_z/pages/add_telescope_page.dart';
 import 'package:shop_a_z/pages/dashboard_page.dart';
 import 'package:shop_a_z/pages/login_page.dart';
+import 'package:shop_a_z/pages/view_telescope_page.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -22,6 +24,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp.router(
       title: 'Flutter Demo',
+      debugShowCheckedModeBanner: false,
       builder: EasyLoading.init(),
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
@@ -43,7 +46,19 @@ class MyApp extends StatelessWidget {
         GoRoute(
             name: DashBoardPage.routeName,
             path: DashBoardPage.routeName,
-            builder: (context, state) => const DashBoardPage()),
+            builder: (context, state) => const DashBoardPage(),
+            routes: [
+              GoRoute(
+                name: ViewTeleScope.routeName,
+                path: ViewTeleScope.routeName,
+                builder: (context, state) => const ViewTeleScope(),
+              ),
+              GoRoute(
+                name: AddTeleScope.routeName,
+                path: AddTeleScope.routeName,
+                builder: (context, state) => const AddTeleScope(),
+              )
+            ]),
         GoRoute(
             name: LoginPage.routeName,
             path: LoginPage.routeName,
