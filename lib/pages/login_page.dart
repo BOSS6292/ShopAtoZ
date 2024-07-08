@@ -97,7 +97,15 @@ class _LoginPageState extends State<LoginPage> {
       try{
         final status = await AuthService.loginAdmin(email, password);
         EasyLoading.dismiss();
-        context.goNamed(DashBoardPage.routeName);
+        if(status){
+          context.goNamed(DashBoardPage.routeName);
+        }else{
+          AuthService.logOut();
+          setState(() {
+            _errMsg = 'This is not admin account';
+          });
+        }
+
       }on FirebaseAuthException catch(error){
         EasyLoading.dismiss();
         setState(() {
