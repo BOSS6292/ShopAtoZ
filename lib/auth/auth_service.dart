@@ -8,4 +8,8 @@ class AuthService{
     final credentials = await _auth.signInWithEmailAndPassword(email: email, password: password);
     return credentials.user != null;
   }
+
+  static Future<void> logOut(){
+    return _auth.signOut();
+  }
 }
