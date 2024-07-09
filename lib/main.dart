@@ -4,6 +4,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shop_a_z/auth/auth_service.dart';
 import 'package:shop_a_z/pages/add_telescope_page.dart';
+import 'package:shop_a_z/pages/brand_page.dart';
 import 'package:shop_a_z/pages/dashboard_page.dart';
 import 'package:shop_a_z/pages/login_page.dart';
 import 'package:shop_a_z/pages/view_telescope_page.dart';
@@ -57,7 +58,13 @@ class MyApp extends StatelessWidget {
                 name: AddTeleScope.routeName,
                 path: AddTeleScope.routeName,
                 builder: (context, state) => const AddTeleScope(),
+              ),
+              GoRoute(
+                name: BrandPage.routeName,
+                path: BrandPage.routeName,
+                builder: (context, state) => const BrandPage(),
               )
+
             ]),
         GoRoute(
             name: LoginPage.routeName,
