@@ -1,13 +1,16 @@
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 import 'package:shop_a_z/auth/auth_service.dart';
 import 'package:shop_a_z/pages/add_telescope_page.dart';
 import 'package:shop_a_z/pages/brand_page.dart';
 import 'package:shop_a_z/pages/dashboard_page.dart';
 import 'package:shop_a_z/pages/login_page.dart';
 import 'package:shop_a_z/pages/view_telescope_page.dart';
+import 'package:shop_a_z/providers/telescope_provider.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -15,7 +18,11 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(MyApp());
+  runApp(MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context)=>TelescopeProvider(),),
+      ],
+      child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {

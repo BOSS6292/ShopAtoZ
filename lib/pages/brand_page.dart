@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shop_a_z/providers/telescope_provider.dart';
 
 class BrandPage extends StatelessWidget {
-  static const String routeName = '/';
+  static const String routeName = 'brand';
+
   const BrandPage({super.key});
 
   @override
@@ -10,7 +13,21 @@ class BrandPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('All Brand'),
       ),
-      body: const Center(),
+      body: Consumer<TelescopeProvider>(
+        builder: (context, provider, child) => provider.brandList.isEmpty
+            ? const Center(
+          child: Text('No Brand Found'),
+        )
+        : ListView.builder(
+          itemCount: provider.brandList.length,
+          itemBuilder: (context,index) {
+            final brand = provider.brandList[index];
+            return ListTile(
+              title: Text(brand.name),
+            );
+          },
+        ),
+      ),
     );
   }
 }
