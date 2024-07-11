@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:shop_a_z/db/db_helper.dart';
-
 import '../models/brand.dart';
 
 class TelescopeProvider with ChangeNotifier {
@@ -11,10 +10,10 @@ class TelescopeProvider with ChangeNotifier {
     return DbHelper.addBrand(brand);
   }
 
-  getAllBrand() {
+  getAllBrands() {
     DbHelper.getAllBrands().listen((snapshot) {
       brandList = List.generate(snapshot.docs.length,
-          (index) => Brand.fromJson(snapshot.docs[index].data()));
+              (index) => Brand.fromJson(snapshot.docs[index].data()));
       notifyListeners();
     });
   }

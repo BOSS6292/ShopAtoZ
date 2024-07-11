@@ -19,7 +19,7 @@ class DashBoardPage extends StatefulWidget {
 class _DashBoardPageState extends State<DashBoardPage> {
   @override
   void didChangeDependencies() {
-    Provider.of<TelescopeProvider>(context).getAllBrand();
+    Provider.of<TelescopeProvider>(context).getAllBrands();
     super.didChangeDependencies();
   }
   @override

@@ -1,9 +1,14 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:shop_a_z/models/brand.dart';
+import 'package:shop_a_z/providers/telescope_provider.dart';
 import 'package:shop_a_z/utils/constants.dart';
 
 class AddTeleScope extends StatefulWidget {
   static const String routeName = 'addtelescope';
+
   const AddTeleScope({super.key});
 
   @override
@@ -32,8 +37,74 @@ class _AddTeleScopeState extends State<AddTeleScope> {
       appBar: AppBar(
         title: const Text('Add TeleScopes'),
       ),
-      body: const Center(
-        child: Text('Add TeleScopes'),
+      body: Form(
+        key: _formKey,
+        child: ListView(
+          padding: const EdgeInsets.all(12.0),
+          children: [
+            Card(
+              child: Column(
+                children: [
+                  imageLocalPath == null
+                      ? const Icon(
+                          Icons.photo,
+                          size: 100,
+                        )
+                      : Image.file(
+                          File(imageLocalPath!),
+                          height: 100,
+                          width: 100,
+                          fit: BoxFit.cover,
+                        ),
+                  const Text('Select Telescope Image\nfrom',
+                      textAlign: TextAlign.center),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      TextButton.icon(
+                        onPressed: () {},
+                        icon: const Icon(Icons.camera),
+                        label: const Text('Camera'),
+                      ),
+                      TextButton.icon(
+                        onPressed: () {},
+                        icon: const Icon(Icons.browse_gallery),
+                        label: const Text('Gallery'),
+                      )
+                    ],
+                  )
+                ],
+              ),
+            ),
+            Card(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Consumer<TelescopeProvider>(
+                    builder: (context, provider, child) =>
+                        DropdownButtonFormField<Brand>(
+                          decoration: const InputDecoration(border: InputBorder.none),
+                          hint: const Text('Select Brand'),
+                          isExpanded: true,
+                          value: brand,
+                          validator: (value) {
+                            if (value == null) {
+                              return 'Please select a brand';
+                            }
+                            return null;
+                          },
+                          items: provider.brandList.map((item) => DropdownMenuItem<Brand>(
+                                    value: item,
+                                    child: Text(item.name),
+                                  )).toList(),
+                          onChanged: (value) {
+                              brand = value;
+                          },
+                        ),
+                ),
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
