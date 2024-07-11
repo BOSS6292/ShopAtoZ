@@ -8,14 +8,14 @@ class Brand {
 
   Brand({this.id, required this.name});
 
-  Map<String, dynamic> toMap() {
+  Map<String, dynamic> toJson() {
     return <String, dynamic>{
       brandFieldId: id,
       brandFieldName: name,
     };
   }
 
-  factory Brand.fromMap(Map<String, dynamic> map) => Brand(
+  factory Brand.fromJson(Map<String, dynamic> map) => Brand(
         id: map[brandFieldId],
         name: map[brandFieldName],
       );
