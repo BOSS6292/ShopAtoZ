@@ -6,6 +6,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_a_z/customwidgets/radio_group.dart';
 import 'package:shop_a_z/models/brand.dart';
+import 'package:shop_a_z/models/telescope.dart';
 import 'package:shop_a_z/providers/telescope_provider.dart';
 import 'package:shop_a_z/utils/constants.dart';
 import 'package:shop_a_z/utils/widget_functions.dart';
@@ -278,6 +279,19 @@ class _AddTeleScopeState extends State<AddTeleScope> {
         final imageModel =
             await Provider.of<TelescopeProvider>(context, listen: false)
                 .uploadImage(imageLocalPath!);
+        final telescope = Telescope(
+            model: _modelController.text,
+            brand: brand!,
+            type: telescopeType,
+            dimension: _dimensionController.text,
+            weightInPound: num.parse(_weightController.text),
+            focustype: focusType,
+            lensDiameterInMM: num.parse(_priceController.text),
+            mountDescription: mountDescription,
+            price: num.parse(_priceController.text),
+            stock: num.parse(_stockController.text),
+            thumbnail: imageModel,
+            additionalImage: []);
       } catch (error) {
         if (kDebugMode) {
           print(error);
