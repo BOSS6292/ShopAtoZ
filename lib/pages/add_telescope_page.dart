@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:provider/provider.dart';
@@ -39,9 +40,7 @@ class _AddTeleScopeState extends State<AddTeleScope> {
       appBar: AppBar(
         title: const Text('Add TeleScopes'),
         actions: [
-          IconButton(
-              onPressed: _saveTelescope,
-              icon: const Icon(Icons.done))
+          IconButton(onPressed: _saveTelescope, icon: const Icon(Icons.done))
         ],
       ),
       body: Form(
@@ -255,6 +254,7 @@ class _AddTeleScopeState extends State<AddTeleScope> {
       ),
     );
   }
+
   @override
   void dispose() {
     _modelController.dispose();
@@ -266,14 +266,23 @@ class _AddTeleScopeState extends State<AddTeleScope> {
     super.dispose();
   }
 
-  void _saveTelescope() {
-    if(imageLocalPath == null){
+  void _saveTelescope() async {
+    if (imageLocalPath == null) {
       showMsg(context, 'Please select a Telescope Image');
       return;
     }
 
-    if(_formKey.currentState!.validate()){
+    if (_formKey.currentState!.validate()) {
       EasyLoading.show(status: 'Please Wait!');
+      try {
+        final imageModel =
+            await Provider.of<TelescopeProvider>(context, listen: false)
+                .uploadImage(imageLocalPath!);
+      } catch (error) {
+        if (kDebugMode) {
+          print(error);
+        }
+      }
     }
   }
 }

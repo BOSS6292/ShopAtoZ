@@ -11,3 +11,5 @@ abstract final class TelescopeUtils {
   static const typeList = [_refractor,_reflector,_catadioptric];
   static const focusList = [_autoFocus,_manualFocus,_autoAndManualFocus];
 }
+
+const String telescopeImageDirectory = 'Telescopes/';
