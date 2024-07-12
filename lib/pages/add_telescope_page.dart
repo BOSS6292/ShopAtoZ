@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shop_a_z/customwidgets/radio_group.dart';
 import 'package:shop_a_z/models/brand.dart';
 import 'package:shop_a_z/providers/telescope_provider.dart';
 import 'package:shop_a_z/utils/constants.dart';
@@ -28,8 +29,8 @@ class _AddTeleScopeState extends State<AddTeleScope> {
   String? imageLocalPath;
   DateTime? dateTime;
   String mountDescription = TelescopeUtils.mountList.first;
-  String focusType = TelescopeUtils.mountList.first;
-  String telescopeType = TelescopeUtils.mountList.first;
+  String focusType = TelescopeUtils.focusList.first;
+  String telescopeType = TelescopeUtils.typeList.first;
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +41,7 @@ class _AddTeleScopeState extends State<AddTeleScope> {
       body: Form(
         key: _formKey,
         child: ListView(
-          padding: const EdgeInsets.all(12.0),
+          padding: const EdgeInsets.all(16.0),
           children: [
             Card(
               child: Column(
@@ -102,6 +103,30 @@ class _AddTeleScopeState extends State<AddTeleScope> {
                         ),
                 ),
               ),
+            ),
+            RadioGroup(
+              groupValue: telescopeType,
+              label: 'Select Telescope Type',
+              items: TelescopeUtils.typeList,
+              onItemsSelected: (value) {
+                telescopeType = value;
+              },
+            ),
+            RadioGroup(
+              groupValue: focusType,
+              label: 'Select Focus Type',
+              items: TelescopeUtils.focusList,
+              onItemsSelected: (value) {
+                focusType = value;
+              },
+            ),
+            RadioGroup(
+              groupValue: mountDescription,
+              label: 'Select Mount Type',
+              items: TelescopeUtils.mountList,
+              onItemsSelected: (value) {
+                mountDescription = value;
+              },
             )
           ],
         ),

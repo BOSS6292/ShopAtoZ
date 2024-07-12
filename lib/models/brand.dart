@@ -16,7 +16,17 @@ class Brand {
   }
 
   factory Brand.fromJson(Map<String, dynamic> map) => Brand(
-        id: map[brandFieldId],
-        name: map[brandFieldName],
-      );
+    id: map[brandFieldId],
+    name: map[brandFieldName],
+  );
+
+  @override
+  bool operator == (Object other) {
+    if (identical(this, other)) return true;
+    return other is Brand && other.id == id && other.name == name;
+  }
+
+  @override
+  int get hashCode => Object.hash(id, name);
+
 }
