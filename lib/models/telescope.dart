@@ -8,6 +8,7 @@ part 'telescope.g.dart';
 
 @unfreezed
 class Telescope with _$Telescope {
+    @JsonSerializable(explicitToJson: true)
   factory Telescope(
       {String? id,
       required String model,

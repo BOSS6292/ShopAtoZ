@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_a_z/customwidgets/radio_group.dart';
 import 'package:shop_a_z/models/brand.dart';
@@ -68,12 +69,16 @@ class _AddTeleScopeState extends State<AddTeleScope> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       TextButton.icon(
-                        onPressed: () {},
+                        onPressed: () {
+                          getImage(ImageSource.camera);
+                        },
                         icon: const Icon(Icons.camera),
                         label: const Text('Camera'),
                       ),
                       TextButton.icon(
-                        onPressed: () {},
+                        onPressed: () {
+                          getImage(ImageSource.gallery);
+                        },
                         icon: const Icon(Icons.browse_gallery),
                         label: const Text('Gallery'),
                       )
@@ -266,6 +271,15 @@ class _AddTeleScopeState extends State<AddTeleScope> {
     super.dispose();
   }
 
+  void getImage(ImageSource imageSource) async {
+    final imageFile = await ImagePicker().pickImage(source: imageSource, imageQuality: 50);
+    if(imageFile != null){
+      setState(() {
+        imageLocalPath = imageFile.path;
+      });
+    }
+  }
+
   void _saveTelescope() async {
     if (imageLocalPath == null) {
       showMsg(context, 'Please select a Telescope Image');
@@ -293,10 +307,12 @@ class _AddTeleScopeState extends State<AddTeleScope> {
             additionalImage: []);
         await Provider.of<TelescopeProvider>(context, listen: false)
             .addTelescope(telescope);
+        EasyLoading.dismiss();
         showMsg(context, 'Saved!');
         _resetFields();
       } catch (error) {
         if (kDebugMode) {
+          EasyLoading.dismiss();
           print(error);
         }
       }
