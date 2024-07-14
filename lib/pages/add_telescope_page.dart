@@ -30,7 +30,6 @@ class _AddTeleScopeState extends State<AddTeleScope> {
   final _formKey = GlobalKey<FormState>();
   Brand? brand;
   String? imageLocalPath;
-  DateTime? dateTime;
   String mountDescription = TelescopeUtils.mountList.first;
   String focusType = TelescopeUtils.focusList.first;
   String telescopeType = TelescopeUtils.typeList.first;
@@ -286,17 +285,36 @@ class _AddTeleScopeState extends State<AddTeleScope> {
             dimension: _dimensionController.text,
             weightInPound: num.parse(_weightController.text),
             focustype: focusType,
-            lensDiameterInMM: num.parse(_priceController.text),
+            lensDiameterInMM: num.parse(_lensDiameterController.text),
             mountDescription: mountDescription,
             price: num.parse(_priceController.text),
             stock: num.parse(_stockController.text),
             thumbnail: imageModel,
             additionalImage: []);
+        await Provider.of<TelescopeProvider>(context, listen: false)
+            .addTelescope(telescope);
+        showMsg(context, 'Saved!');
+        _resetFields();
       } catch (error) {
         if (kDebugMode) {
           print(error);
         }
       }
     }
+  }
+
+  void _resetFields() {
+    setState(() {
+      _modelController.clear();
+      _dimensionController.clear();
+      _weightController.clear();
+      _priceController.clear();
+      _lensDiameterController.clear();
+      brand = null;
+      imageLocalPath = null;
+      mountDescription = TelescopeUtils.mountList.first;
+      focusType = TelescopeUtils.focusList.first;
+      telescopeType = TelescopeUtils.typeList.first;
+    });
   }
 }

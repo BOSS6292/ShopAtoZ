@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:shop_a_z/db/db_helper.dart';
+import 'package:shop_a_z/models/telescope.dart';
 import 'package:shop_a_z/utils/constants.dart';
 import '../models/brand.dart';
 import '../models/image_model.dart';
@@ -37,5 +38,9 @@ class TelescopeProvider with ChangeNotifier {
         imageName: imageName,
         directoryName: telescopeImageDirectory,
         downloadUrl: url);
+  }
+
+  Future<void>addTelescope(Telescope telescope)async {
+    return DbHelper.addTelescope(telescope);
   }
 }
