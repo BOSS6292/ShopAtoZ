@@ -20,6 +20,7 @@ class _DashBoardPageState extends State<DashBoardPage> {
   @override
   void didChangeDependencies() {
     Provider.of<TelescopeProvider>(context).getAllBrands();
+    Provider.of<TelescopeProvider>(context).getAllTelescopes();
     super.didChangeDependencies();
   }
   @override

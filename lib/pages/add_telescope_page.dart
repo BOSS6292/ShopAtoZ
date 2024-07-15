@@ -326,6 +326,7 @@ class _AddTeleScopeState extends State<AddTeleScope> {
       _weightController.clear();
       _priceController.clear();
       _lensDiameterController.clear();
+      _stockController.clear();
       brand = null;
       imageLocalPath = null;
       mountDescription = TelescopeUtils.mountList.first;

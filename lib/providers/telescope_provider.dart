@@ -10,6 +10,7 @@ import '../models/image_model.dart';
 
 class TelescopeProvider with ChangeNotifier {
   List<Brand> brandList = [];
+  List<Telescope> telescopeList = [];
 
   Future<void> addBrand(String name) {
     final brand = Brand(name: name);
@@ -23,6 +24,15 @@ class TelescopeProvider with ChangeNotifier {
       notifyListeners();
     });
   }
+
+  getAllTelescopes() {
+    DbHelper.getAllTelescopes().listen((snapshot) {
+      telescopeList = List.generate(snapshot.docs.length,
+              (index) => Telescope.fromJson(snapshot.docs[index].data()));
+      notifyListeners();
+    });
+  }
+
 
   Future<ImageModel> uploadImage(String imageLocalPath) async {
     final String imageName = 'image_${DateTime.now().millisecondsSinceEpoch}';
