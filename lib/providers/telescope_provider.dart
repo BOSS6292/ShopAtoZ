@@ -28,11 +28,10 @@ class TelescopeProvider with ChangeNotifier {
   getAllTelescopes() {
     DbHelper.getAllTelescopes().listen((snapshot) {
       telescopeList = List.generate(snapshot.docs.length,
-              (index) => Telescope.fromJson(snapshot.docs[index].data()));
+          (index) => Telescope.fromJson(snapshot.docs[index].data()));
       notifyListeners();
     });
   }
-
 
   Future<ImageModel> uploadImage(String imageLocalPath) async {
     final String imageName = 'image_${DateTime.now().millisecondsSinceEpoch}';
@@ -50,7 +49,10 @@ class TelescopeProvider with ChangeNotifier {
         downloadUrl: url);
   }
 
-  Future<void>addTelescope(Telescope telescope)async {
+  Future<void> addTelescope(Telescope telescope) async {
     return DbHelper.addTelescope(telescope);
   }
+
+  Telescope findTelescopeById(String id) =>
+      telescopeList.firstWhere((element) => element.id == id);
 }
