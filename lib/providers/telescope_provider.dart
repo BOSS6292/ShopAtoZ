@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:firebase_storage/firebase_storage.dart';
@@ -51,6 +52,10 @@ class TelescopeProvider with ChangeNotifier {
 
   Future<void> addTelescope(Telescope telescope) async {
     return DbHelper.addTelescope(telescope);
+  }
+
+  Future<void> updateTelescopeField(String id, String field, dynamic value){
+    return DbHelper.updateTelescopeField(id,{field:value});
   }
 
   Telescope findTelescopeById(String id) =>

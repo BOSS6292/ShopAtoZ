@@ -1,8 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_a_z/customwidgets/image_holder_view.dart';
+import 'package:shop_a_z/models/image_model.dart';
 import 'package:shop_a_z/models/telescope.dart';
 import 'package:shop_a_z/providers/telescope_provider.dart';
 import 'package:shop_a_z/utils/helper_functions.dart';
@@ -59,7 +61,7 @@ class _TelescopeDetailsPageState extends State<TelescopeDetailsPage> {
                 children: [
                   FloatingActionButton.small(
                     onPressed: () {
-                      // Add your onPressed logic here
+                      getImage(ImageSource.gallery);
                     },
                     tooltip: 'Add Additional Image',
                     child: const Icon(Icons.add),
@@ -81,7 +83,7 @@ class _TelescopeDetailsPageState extends State<TelescopeDetailsPage> {
                     ...telescope.additionalImage.map((e) => ImageHolderView(
                           imageModel: e,
                           onImagePressed: () {
-                            // Add your onPressed logic here
+                            _showImageOnDialog(e);
                           },
                         )),
                 ],
@@ -145,5 +147,54 @@ class _TelescopeDetailsPageState extends State<TelescopeDetailsPage> {
         ],
       ),
     );
+  }
+
+  void getImage(ImageSource source) async {
+    final file = await ImagePicker().pickImage(source: source, imageQuality: 50);
+    if(file != null){
+      EasyLoading.show(status: 'Please Wait');
+      final newImage = await provider.uploadImage(file.path);
+      telescope.additionalImage.add(newImage);
+      provider.updateTelescopeField(
+          telescope.id!,
+          'additionalImage',
+          toImageList(telescope.additionalImage))
+          .then((value) {
+            EasyLoading.dismiss();
+            showMsg(context, 'Added');
+            setState(() {
+
+            });
+      })
+      .catchError((error){
+        EasyLoading.dismiss();
+        showMsg(context, 'Fail to Add');
+      });
+    }
+  }
+
+  void _showImageOnDialog(ImageModel e) {
+    showDialog(context: context, builder: (context)=> AlertDialog(
+      content: CachedNetworkImage(
+        fit: BoxFit.contain,
+        height: MediaQuery.of(context).size.height/2,
+        imageUrl: e.downloadUrl,
+        placeholder: (context,url) =>
+        const Center(child: CircularProgressIndicator()),
+        errorWidget: (context,url,error) => const Icon(Icons.error),
+      ),
+      actions: [
+        IconButton(onPressed: (){
+          Navigator.pop(context);
+        },
+            icon: const Icon(Icons.close),
+        ),
+        IconButton(onPressed: (){
+
+        },
+          icon: const Icon(Icons.delete),
+        )
+      ],
+    ));
   }
 }
