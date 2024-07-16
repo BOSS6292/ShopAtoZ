@@ -50,6 +50,12 @@ class TelescopeProvider with ChangeNotifier {
         downloadUrl: url);
   }
 
+  Future<void> deleteImage(String id, ImageModel image) async{
+    final photoRef = FirebaseStorage.instance.ref()
+        .child('${image.directoryName}${image.imageName}');
+    return photoRef.delete();
+  }
+
   Future<void> addTelescope(Telescope telescope) async {
     return DbHelper.addTelescope(telescope);
   }

@@ -189,8 +189,21 @@ class _TelescopeDetailsPageState extends State<TelescopeDetailsPage> {
         },
             icon: const Icon(Icons.close),
         ),
-        IconButton(onPressed: (){
+        IconButton(
+          onPressed: () async {
+            Navigator.pop(context);
+            EasyLoading.show(status: 'Please Wait');
+            try{
+              await provider.deleteImage(telescope.id!, e);
+              telescope.additionalImage.remove(e);
+              await provider.updateTelescopeField(telescope.id!, 'additionalImage', toImageList(telescope.additionalImage));
+              EasyLoading.dismiss();
+              setState(() {
 
+              });
+            }catch(error){
+              EasyLoading.dismiss();
+            }
         },
           icon: const Icon(Icons.delete),
         )
