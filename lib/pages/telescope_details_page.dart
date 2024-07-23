@@ -1,11 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_a_z/customwidgets/image_holder_view.dart';
 import 'package:shop_a_z/models/image_model.dart';
 import 'package:shop_a_z/models/telescope.dart';
+import 'package:shop_a_z/pages/description_page.dart';
 import 'package:shop_a_z/providers/telescope_provider.dart';
 import 'package:shop_a_z/utils/helper_functions.dart';
 import 'package:shop_a_z/utils/widget_functions.dart';
@@ -91,7 +93,11 @@ class _TelescopeDetailsPageState extends State<TelescopeDetailsPage> {
             ),
           ),
           ElevatedButton(
-            onPressed: () {},
+            onPressed: () {
+              telescope.description == null ?
+                  context.goNamed(DescriptionPage.routeName, extra: telescope.id) :
+                  showDescriptionDialog();
+            },
             child: Text(telescope.description == null
                 ? 'Add Description'
                 : 'Show Description'),
@@ -111,6 +117,10 @@ class _TelescopeDetailsPageState extends State<TelescopeDetailsPage> {
                     title: 'Edit Price',
                     onSubmit: (value) {
                       EasyLoading.show(status: 'Please Wait');
+                      provider.updateTelescopeField(widget.id, 'price', num.parse(value)).then((value) {
+                        EasyLoading.dismiss();
+                        showMsg(context, 'Price Updated');
+                      });
                     });
               },
               icon: const Icon(Icons.edit),
@@ -125,13 +135,17 @@ class _TelescopeDetailsPageState extends State<TelescopeDetailsPage> {
                     title: 'Edit Discount',
                     onSubmit: (value) {
                       EasyLoading.show(status: 'Please Wait');
+                      provider.updateTelescopeField(widget.id, 'discount', num.parse(value)).then((value) {
+                        EasyLoading.dismiss();
+                        showMsg(context, 'Discount Updated');
+                      });
                     });
               },
               icon: const Icon(Icons.edit),
             ),
           ),
           ListTile(
-            title: Text('Stock : ${telescope.stock}%'),
+            title: Text('Stock : ${telescope.stock}'),
             trailing: IconButton(
               onPressed: () {
                 showSingleTextInputDialog(
@@ -139,6 +153,10 @@ class _TelescopeDetailsPageState extends State<TelescopeDetailsPage> {
                     title: 'Edit Stock',
                     onSubmit: (value) {
                       EasyLoading.show(status: 'Please Wait');
+                      provider.updateTelescopeField(widget.id, 'stock', num.parse(value)).then((value) {
+                        EasyLoading.dismiss();
+                        showMsg(context, 'Stock Updated');
+                      });
                     });
               },
               icon: const Icon(Icons.edit),
@@ -207,6 +225,29 @@ class _TelescopeDetailsPageState extends State<TelescopeDetailsPage> {
         },
           icon: const Icon(Icons.delete),
         )
+      ],
+    ));
+  }
+
+  showDescriptionDialog() {
+    showDialog(context: context, builder: (context) => AlertDialog(
+      title: Text(telescope.model),
+      content: SingleChildScrollView(
+        child: Text(telescope.description!),
+      ),
+      actions: [
+        TextButton(
+            onPressed: (){
+              context.pop();
+              context.goNamed(DescriptionPage.routeName,extra: telescope.id);
+            },
+            child: const Text('Edit')
+        ),
+        TextButton(
+            onPressed: (){
+              context.pop();
+            },
+            child: const Text('Close'))
       ],
     ));
   }
